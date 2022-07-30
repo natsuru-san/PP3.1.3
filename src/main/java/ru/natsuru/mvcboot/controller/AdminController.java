@@ -19,24 +19,25 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping("/admin/list")
+    @RequestMapping(value = "/admin/list", method = RequestMethod.GET)
     public String getAllUsers(Principal principal, Model model) {
         model.addAttribute("listUsers", userService.getListUsers());
         model.addAttribute("principal", userService.getUserObjectByLogin(principal.getName()));
         return "/pages/users.html";
     }
-    @GetMapping("/admin")
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String redirectToAdminListOfUsers() {
         return "redirect:/admin/list";
     }
 
-    @GetMapping("/admin/new")
+    @RequestMapping(value = "/admin/new", method = RequestMethod.GET)
     public String addNewUser(Principal principal, Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("principal", userService.getUserObjectByLogin(principal.getName()));
         return "/pages/new.html";
     }
-    @PostMapping("/admin/create")
+
+    @RequestMapping(value = "/admin/create", method = RequestMethod.POST)
     public String creatingNewUser(@ModelAttribute User user, @RequestParam("role") int role) {
         Set<Role> updatedRoles = new HashSet<>();
         updatedRoles.add(roleService.getAllRoles().get(role - 1));
@@ -46,13 +47,13 @@ public class AdminController {
     }
 
     //Цей метод контролера треба використовувати через кнопку в шаблоні html, інакше помилка #405
-    @DeleteMapping("/admin/delete/{id}")
+    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
 
-    @PatchMapping("/admin/change")
+    @RequestMapping(value = "/admin/change", method = RequestMethod.PATCH)
     public String changeUser(@ModelAttribute User user, @RequestParam("role") int role) {
         Set<Role> updatedRoles = new HashSet<>();
         updatedRoles.add(roleService.getAllRoles().get(role - 1));
