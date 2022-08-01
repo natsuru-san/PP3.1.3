@@ -7,7 +7,6 @@ import java.util.Set;
 
 public interface UserDao {
     List<User> pullListUsers();
-    void putUser(String name, String surName, int socialNumber, String mail);
     void putUser(User user);
     void removeUser(long id);
     void updateUser(User user);
